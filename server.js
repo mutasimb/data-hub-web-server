@@ -1,5 +1,5 @@
 const
-  { PORT } = process.env,
+  PORT = process.env.PORT || 9001,
 
   express = require("express"),
   { ApolloServer } = require("apollo-server-express"),
