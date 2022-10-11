@@ -1,20 +1,20 @@
 const
-  { PORT }  = process.env,
+  { PORT } = process.env,
 
   express = require("express"),
   { ApolloServer } = require("apollo-server-express"),
   { json, urlencoded } = require("body-parser"),
   cors = require("cors"),
   { connect } = require("mongoose"),
-  
-  typeDefs = require("./graphQL/types"),
-  resolvers = require("./graphQL/resolvers"),
+
+  typeDefs = require("./graphQL/types.js"),
+  resolvers = require("./graphQL/resolvers.js"),
 
   startServer = async () => {
     const
       app = express(),
       apolloServer = new ApolloServer({ typeDefs, resolvers });
-      
+
     await apolloServer.start();
 
     apolloServer.applyMiddleware({
@@ -26,9 +26,11 @@ const
     app.use(cors({ origin: "*" }));
     app.use(urlencoded({ extended: false }));
     app.use(json());
-    
+
+    app.use("/api/bmd-kobo", require("./api/bmd-kobo.js"));
+
     await connect(
-      require("./config/keys").mongoUri,
+      require("./config/keys.js").mongoUri,
       {
         useUnifiedTopology: true,
         useNewUrlParser: true,
@@ -38,7 +40,7 @@ const
     console.log("Connection established with database");
 
     app.listen(PORT, () => {
-      console.log(`Server started on port ${ PORT }`);
+      console.log(`Server started on port ${PORT}`);
     });
   };
 
