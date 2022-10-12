@@ -2,7 +2,7 @@ const { timeFormat } = require('d3-time-format');
 
 const
   { GraphQLScalarType, Kind } = require('graphql'),
-  BmdObservedDataV190520 = require("../models/BmdObservedDataV190520.js"),
+  BmdObservedDataV220926 = require("../models/BmdObservedDataV220926.js"),
 
   dateScalar = new GraphQLScalarType({
     name: 'Date',
@@ -30,16 +30,16 @@ const
         return { title: timeFormat("%X")(new Date()) }
       },
       getAllBmdKoboAreas: async () => {
-        return await BmdObservedDataV190520.distinct("st");
+        return await BmdObservedDataV220926.distinct("st");
       },
       getAllBmdKoboYears: async () => {
         const todayYear = (new Date()).getFullYear();
-        return [todayYear - 1, todayYear];
+        return todayYear === 2022 ? [2022] : [todayYear - 1, todayYear];
       },
       getAllBmdKoboEntries: async () => {
         const
           todayYear = (new Date()).getFullYear(),
-          entries = await BmdObservedDataV190520.find({
+          entries = await BmdObservedDataV220926.find({
             tm: {
               $gte: new Date(`${todayYear - 2}-12-31T17:59:59.000Z`)
             }
