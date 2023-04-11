@@ -41,7 +41,8 @@ const
           todayYear = (new Date()).getFullYear(),
           entries = await BmdObservedDataV220926.find({
             tm: {
-              $gte: new Date(`${todayYear - 2}-12-31T17:59:59.000Z`)
+              $gte: new Date(`${todayYear - 2}-12-31T17:59:59.000Z`),
+              $lte: new Date(`${todayYear}-12-31T17:59:59.000Z`)
             }
           });
         return entries;
